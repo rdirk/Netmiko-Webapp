@@ -283,16 +283,25 @@ def trigger_backup():
         captured_output = io.StringIO()
         sys.stdout = captured_output
 
+        all_success = True
+
         try:
             logging.info('Backup start at: %s', dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             with ThreadPoolExecutor(max_workers=2) as executor:
-                futures = [executor.submit(backup_konfigurasi, [p]) for p in perangkat]
+                futures = {executor.submit(backup_konfigurasi, [p]): p for p in perangkat}
                 for future in futures:
-                    future.result(timeout=360)
-        except TimeoutError:
-            flash('Timeout', 'warning')
+                    device_info = futures[future]
+                    try:
+                        future.result(timeout=360)
+                    except TimeoutError:
+                        flash(f"Timeout on {device_info['host']}", 'warning')
+                        all_success = False
+                    except Exception as e:
+                        flash(f"Error on {device_info['host']}: {str(e)}", 'danger')
+                        all_success = False
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
+            all_success = False
 
         # Mengembalikan stdout ke aslinya
         sys.stdout = original_stdout
@@ -302,6 +311,9 @@ def trigger_backup():
         
         # Menutup objek StringIO
         captured_output.close()
+
+        if all_success:
+            flash("Backup Success", 'success')
 
         if 'username' in session:
             username = session['username']
