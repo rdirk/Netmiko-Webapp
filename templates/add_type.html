@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Tambah Tipe Perangkat{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Tipe Perangkat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Add Device Type</h1>
+        <div class="card-body">
+            <div class="mb-3">
+                <form action="{{ url_for('upload_excel_type') }}" method="post" enctype="multipart/form-data" class="mb-3">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="file" name="file" accept=".xlsx" class="form-control">
+                    <input type="submit" value="Upload" class="btn btn-success mt-2">
+                </form>
+            </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+        <form method="POST" action="{{ url_for('tambah_type') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group mb-3">
+                <label for="device_type" class="form-label">Device Type:</label>
+                <input type="text" name="device_type" id="device_type" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="command" class="form-label">Command:</label>
+                <input type="text" name="command" id="command" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="{{ url_for('view_type') }}" class="btn btn-secondary">Back</a>
+        </form>
+        <div class="pt-5">
+            <p><a class="link-opacity-100" href="https://github.com/ktbyers/netmiko/blob/develop/PLATFORMS.md#supported-ssh-device_type-values" target="_blank">Supported Device</a></p>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}

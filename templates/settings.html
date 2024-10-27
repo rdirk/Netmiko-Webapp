@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Settings Schedule Backup</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <h1 class="mb-4">Settings Schedule Backup</h1>
+        <form method="POST" class="needs-validation" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="next_backup_time">Next Backup Time:</label>
+                <input type="datetime-local" class="form-control" id="next_backup_time" name="next_backup_time" 
+                       value="{{ setting['next_backup_time'].strftime('%Y-%m-%dT%H:%M') if setting['next_backup_time'] else '' }}" required>
+                <div class="invalid-feedback">
+                    Please select the next backup time.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="backup_frequency">Backup Frequency:</label>
+                <select class="form-control" id="backup_frequency" name="backup_frequency" required>
+                    <option value="daily" {% if setting['backup_frequency'] == 'daily' %}selected{% endif %}>Daily</option>
+                    <option value="weekly" {% if setting['backup_frequency'] == 'weekly' %}selected{% endif %}>Weekly</option>
+                    <option value="monthly" {% if setting['backup_frequency'] == 'monthly' %}selected{% endif %}>Monthly</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select the backup frequency.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        $(function () {
+          $('#next_backup_time').datetimepicker({
+              inline: true,
+              sideBySide: true
+          });
+      });
+    </script>
+</body>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Halaman Utama{% endblock %}
+
+{% block content %}
+<h1>Selamat Datang di Info Page</h1>
+{% if username %}
+    <p>Selamat datang, {{ username }}!</p>
+    
+{% else %}
+    <p>Anda belum login! <a href="/login">Login di sini</a></p>
+{% endif %}
+{% endblock %}

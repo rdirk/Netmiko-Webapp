@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Tambah Perangkat{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Perangkat</title>
+    <!-- Menambahkan Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Menambahkan FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Add Device</h1>
+                    </div>
+                    <div class="card-body">
+                    <div class="mb-3">
+                        <form action="{{ url_for('upload_excel') }}" method="post" enctype="multipart/form-data" class="mb-3">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="file" name="file" accept=".xlsx" class="form-control">
+                            <input type="submit" value="Upload" class="btn btn-success mt-2">
+                        </form>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('tambah_perangkat') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="form-group mb-3">
+                                <label for="type" class="form-label">Device Type:</label>
+                                <select name="type" id="type" class="form-select">
+                                    {% for cmd in commands %}
+                                    <option value="{{ cmd.device_type }}">{{ cmd.device_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="hostname" class="form-label">Hostname:</label>
+                                <input type="text" class="form-control" id="hostname" name="hostname" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ip" class="form-label">IP Address:</label>
+                                <input type="text" class="form-control" id="ip" name="ip" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="location" class="form-label">Location:</label>
+                                <input type="text" class="form-control" id="location" name="location" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="username" class="form-label">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Create</button>
+                            <a href="/view-device" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+                        </form>
+                        <div class="pt-5">
+                        <p><a class="link-opacity-100" href="https://github.com/ktbyers/netmiko/blob/develop/PLATFORMS.md#supported-ssh-device_type-values" target="_blank">Supported Device</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Menambahkan Bootstrap Bundle dengan Popper -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Menambahkan FontAwesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+</body>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Halaman Utama{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Device</title>
+    <!-- Menambahkan Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Menambahkan FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Edit Device</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('update_perangkat') }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="id" value="{{ perangkat.id }}">
+                            <div class="form-group mb-3">
+                                <label for="type" class="form-label">Device Type:</label>
+                                <select name="type" id="type" class="form-select">
+                                    <option value="{{ perangkat.device_type }}" selected>{{ perangkat.device_type }}</option>
+                                    <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                                    {% for cmd in commands %}
+                                    <option value="{{ cmd.device_type }}">{{ cmd.device_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="hostname" class="form-label">Hostname:</label>
+                                <input type="text" name="hostname" id="hostname" class="form-control" value="{{ perangkat.hostname }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ip" class="form-label">IP Address:</label>
+                                <input type="text" name="ip" id="ip" class="form-control" value="{{ perangkat.ip }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="location" class="form-label">Location:</label>
+                                <input type="text" name="location" id="location" class="form-control" value="{{ perangkat.location }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="username" class="form-label">Username:</label>
+                                <input type="text" name="username" id="username" class="form-control" value="{{ perangkat.username }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                <input type="password" name="password" id="password" class="form-control" value="{{ perangkat.password }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                            <a href="/view-device" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Menambahkan Bootstrap Bundle dengan Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#type').on('click', function() {
+                $(this).find('option:selected').hide();
+            }).on('blur', function() {
+                $(this).find('option').show();
+            });
+        });
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Menambahkan FontAwesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+</body>
+{% endblock %}

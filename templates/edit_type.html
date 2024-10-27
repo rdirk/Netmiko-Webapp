@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Tipe Perangkat{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Tipe Perangkat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Edit Tipe Perangkat</h1>
+        <form method="POST" action="{{ url_for('update_type') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="id" value="{{ device_type.id }}">
+            <div class="form-group mb-3">
+                <label for="device_type" class="form-label">Tipe Perangkat:</label>
+                <input type="text" name="device_type" id="device_type" class="form-control" value="{{ device_type.device_type }}" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="command" class="form-label">Command:</label>
+                <input type="text" name="command" id="command" class="form-control" value="{{ device_type.command }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{{ url_for('view_type') }}" class="btn btn-secondary">Kembali</a>
+        </form>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
