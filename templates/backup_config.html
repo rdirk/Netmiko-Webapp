@@ -12,7 +12,12 @@
 </head>
 <body>
   <div class="container mt-5">
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Status Backup</h5>
+        <p id="logBackup"></p> <!-- Tempat menampilkan log -->
+        <p>{{pesan}}</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
     <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
     {% if messages %}
       {% for category, message in messages %}
@@ -23,12 +28,6 @@
       {% endfor %}
     {% endif %}
     {% endwith %} 
-
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Status Backup</h5>
-        <p id="logBackup"></p> <!-- Tempat menampilkan log -->
-        <p>{{pesan}}</p>
       </div>
     </div>
 
@@ -89,14 +88,14 @@
             }, 1000 * processedFiles);
 
             $('#backupButton').prop('disabled', false);
-            $('#backupStatus').text('Backup berhasil');
+            $('#backupStatus').text('Backup success');
             $('#backupAlert').modal('show');
           },
           error: function(xhr, status, error) {
             $('#progress-container').hide();
             $('#backupButton').prop('disabled', false);
-            console.error('Error saat backup: ' + error);
-            $('#logBackup').text('Error saat backup: ' + error);
+            console.error('Error when backup: ' + error);
+            $('#logBackup').text('Error when backup: ' + error);
           }
         });
       });
