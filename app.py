@@ -289,7 +289,6 @@ def trigger_backup():
                 futures = [executor.submit(backup_konfigurasi, [p]) for p in perangkat]
                 for future in futures:
                     future.result(timeout=360)
-                flash('Backup success', 'success')
         except TimeoutError:
             flash('Timeout', 'warning')
         except Exception as e:
