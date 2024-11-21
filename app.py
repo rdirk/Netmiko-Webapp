@@ -138,7 +138,7 @@ def home():
     if 'username' in session:
         username = session['username']
         return render_template('base.html', username=username)
-    return 'Your not login <a href="/login">Login here</a>'
+    return redirect(url_for('login'))
 
 def getReadableByteSize(num, suffix='B') -> str:
     for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
